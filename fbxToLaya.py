@@ -26,9 +26,9 @@ if __name__ == "__main__":
     if not lResult:
         print("\n\nAn error occurred while loading the scene...")
     else:
-        # scene = FBXScene3D(lScene,sys.argv[2],sys.argv[1])
-        # scene.witeFile()
-        DisPlayScene(lScene)
+        scene = FBXScene3D(lScene,sys.argv[2],sys.argv[1])
+        scene.witeFile()
+        # DisPlayScene(lScene)
     lSdkManager.Destroy()
 
     sys.exit(0)
