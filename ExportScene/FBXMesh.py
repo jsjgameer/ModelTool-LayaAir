@@ -9,14 +9,14 @@ from ImportScene.DisplayCommon import DisplayString, DisplayInt, Display4DVector
 
 
 class Triangle:
-    Count = 0;
+    Count = 0
     point1 = None
     point2 = None
     point3 = None
 
     def __init__(self):
         self.count = Triangle.Count
-        Triangle.Count = Triangle.Count+1
+        Triangle.Count = Triangle.Count + 1
         pass
 
     def triangleBoneIndex(self):
@@ -63,18 +63,20 @@ class Triangle:
         pass
 
 
-
 def readVertice(self, data, index):
-    self.vertice = [data[index], data[index+1], data[index+2]]
-    return index+3
+    self.vertice = [data[index], data[index + 1], data[index + 2]]
+    return index + 3
 
 
 def readNormal(self, data, index):
     self.normal = [data[index], data[index + 1], data[index + 2]]
-    return index+3
+    return index + 3
+
 
 def readColor(self, data, index):
-    self.color = [data[index], data[index + 1], data[index + 2], data[index + 3]]
+    self.color = [
+        data[index], data[index + 1], data[index + 2], data[index + 3]
+    ]
     return index + 4
 
 
@@ -89,22 +91,35 @@ def readUV2(self, data, index):
 
 
 def readBoneWeigth(self, data, index):
-    self.boneWeight = [data[index], data[index + 1], data[index + 2], data[index + 3]]
+    self.boneWeight = [
+        data[index], data[index + 1], data[index + 2], data[index + 3]
+    ]
     return index + 4
 
 
 def readBoneIndex(self, data, index):
-    self.boneIndex = [data[index], data[index + 1], data[index + 2], data[index + 3]]
+    self.boneIndex = [
+        data[index], data[index + 1], data[index + 2], data[index + 3]
+    ]
     return index + 4
 
+
 def readTangent(self, data, index):
-    self.tangent = [data[index], data[index + 1], data[index + 2], data[index + 3]]
+    self.tangent = [
+        data[index], data[index + 1], data[index + 2], data[index + 3]
+    ]
     return index + 4
+
 
 def hashMap(data):
     return hash(str(data))
 
-readList = [readVertice, readNormal,readColor,readUV,readUV2,readBoneWeigth,readBoneIndex,readTangent]
+
+readList = [
+    readVertice, readNormal, readColor, readUV, readUV2, readBoneWeigth,
+    readBoneIndex, readTangent
+]
+
 
 class VertexData:
     index = 0
@@ -130,6 +145,7 @@ class VertexData:
         for i in range(len(runList)):
             coundIndex = readList[runList[i]](self, dataarr, coundIndex)
         pass
+
     def getHash(self):
         data = []
         if self.vertice is not None:
@@ -159,7 +175,9 @@ class VertexData:
 
     def setVertice(self, vertice, scale):
         if self.vertice is None:
-            self.vertice = [vertice[0] * scale, vertice[2] * scale, vertice[1] * scale]
+            self.vertice = [
+                vertice[0] * scale, vertice[2] * scale, vertice[1] * scale
+            ]
         else:
             self.vertice[0] = vertice[0] * scale
             self.vertice[1] = vertice[2] * scale
@@ -197,14 +215,17 @@ class VertexData:
     def getByte(self):
         data = bytes()
         if self.vertice is not None:
-            data += float_2_byte(self.vertice[0]) + float_2_byte(self.vertice[1]) + float_2_byte(self.vertice[2])
+            data += float_2_byte(self.vertice[0]) + float_2_byte(
+                self.vertice[1]) + float_2_byte(self.vertice[2])
             pass
         if self.normal is not None:
-            data += float_2_byte(self.normal[0]) + float_2_byte(self.normal[1]) + float_2_byte(self.normal[2])
+            data += float_2_byte(self.normal[0]) + float_2_byte(
+                self.normal[1]) + float_2_byte(self.normal[2])
             pass
         if self.color is not None:
-            data += float_2_byte(self.color[0]) + float_2_byte(self.color[1]) + float_2_byte(
-                self.color[2]) + float_2_byte(self.color[3])
+            data += float_2_byte(self.color[0]) + float_2_byte(
+                self.color[1]) + float_2_byte(self.color[2]) + float_2_byte(
+                    self.color[3])
             pass
         if self.uv is not None:
             data += float_2_byte(self.uv[0]) + float_2_byte(self.uv[1])
@@ -213,14 +234,17 @@ class VertexData:
             data += float_2_byte(self.uv2[0]) + float_2_byte(self.uv2[1])
             pass
         if self.boneWeight is not None:
-            data += float_2_byte(self.boneWeight[0]) + float_2_byte(self.boneWeight[1]) + float_2_byte(
-                self.boneWeight[2]) + float_2_byte(self.boneWeight[3])
-            data += uint8_2_byte(self.boneIndex[0]) + uint8_2_byte(self.boneIndex[1]) + uint8_2_byte(
-                self.boneIndex[2]) + uint8_2_byte(self.boneIndex[3])
+            data += float_2_byte(self.boneWeight[0]) + float_2_byte(
+                self.boneWeight[1]) + float_2_byte(
+                    self.boneWeight[2]) + float_2_byte(self.boneWeight[3])
+            data += uint8_2_byte(self.boneIndex[0]) + uint8_2_byte(
+                self.boneIndex[1]) + uint8_2_byte(
+                    self.boneIndex[2]) + uint8_2_byte(self.boneIndex[3])
             pass
         if self.tangent is not None:
-            data += float_2_byte(self.tangent[0]) + float_2_byte(self.tangent[1]) + float_2_byte(
-                self.tangent[2]) + float_2_byte(self.tangent[3])
+            data += float_2_byte(self.tangent[0]) + float_2_byte(
+                self.tangent[1]) + float_2_byte(
+                    self.tangent[2]) + float_2_byte(self.tangent[3])
             pass
         return data
         pass
@@ -228,13 +252,19 @@ class VertexData:
     def clone(self, index):
         vertexData = VertexData(index)
         if self.vertice is not None:
-            vertexData.vertice = [self.vertice[0], self.vertice[1], self.vertice[2]]
+            vertexData.vertice = [
+                self.vertice[0], self.vertice[1], self.vertice[2]
+            ]
             pass
         if self.normal is not None:
-            vertexData.normal = [self.normal[0], self.normal[1], self.normal[2]]
+            vertexData.normal = [
+                self.normal[0], self.normal[1], self.normal[2]
+            ]
             pass
         if self.color is not None:
-            vertexData.color = [self.color[0], self.color[1], self.color[2], self.color[3]]
+            vertexData.color = [
+                self.color[0], self.color[1], self.color[2], self.color[3]
+            ]
             pass
         if self.uv is not None:
             vertexData.uv = [self.uv[0], self.uv[1]]
@@ -243,11 +273,20 @@ class VertexData:
             vertexData.uv2 = [self.uv2[0], self.uv2[1]]
             pass
         if self.boneWeight is not None:
-            vertexData.boneWeight = [self.boneWeight[0], self.boneWeight[1], self.boneWeight[2], self.boneWeight[3]]
-            vertexData.boneIndex = [self.boneIndex[0], self.boneIndex[1], self.boneIndex[2], self.boneIndex[3]]
+            vertexData.boneWeight = [
+                self.boneWeight[0], self.boneWeight[1], self.boneWeight[2],
+                self.boneWeight[3]
+            ]
+            vertexData.boneIndex = [
+                self.boneIndex[0], self.boneIndex[1], self.boneIndex[2],
+                self.boneIndex[3]
+            ]
             pass
         if self.tangent is not None:
-            vertexData.tangent = [self.tangent[0], self.tangent[1], self.tangent[2], self.tangent[3]]
+            vertexData.tangent = [
+                self.tangent[0], self.tangent[1], self.tangent[2],
+                self.tangent[3]
+            ]
             pass
         return vertexData
         pass
@@ -273,11 +312,9 @@ class FBXMesh(FBXNode):
         pass
 
     def analysisMeshConten(self):
-        DisplayString("    解析模型", self.nodeName)
         if (self._pMesh.GetControlPointsCount() < 0):  # 没有顶点
             print("没有顶点数据")
             return
-            pass
         self.analysisBone()
 
         nodeName = FBXUnit.checkFileName(self.nodeName)
@@ -298,15 +335,17 @@ class FBXMesh(FBXNode):
     def analysisBone(self):
         pGeometry = self._pMesh
         lSkinCount = pGeometry.GetDeformerCount(FbxDeformer.eSkin)
-        DisplayInt("蒙皮数量：", lSkinCount)
+        # DisplayInt("蒙皮数量：", lSkinCount)
         for i in range(lSkinCount):
-            lClusterCount = pGeometry.GetDeformer(i, FbxDeformer.eSkin).GetClusterCount()
+            lClusterCount = pGeometry.GetDeformer(
+                i, FbxDeformer.eSkin).GetClusterCount()
             self.weightTable = {}
             self.bonesName = []
             self.bindPos = []
             for j in range(lClusterCount):
                 self._isSkinnerMesh = True
-                lCluster = pGeometry.GetDeformer(i, FbxDeformer.eSkin).GetCluster(j)
+                lCluster = pGeometry.GetDeformer(
+                    i, FbxDeformer.eSkin).GetCluster(j)
                 self.bonesName.append(lCluster.GetLink().GetName())
 
                 lIndexCount = lCluster.GetControlPointIndicesCount()
@@ -338,9 +377,9 @@ class FBXMesh(FBXNode):
             bones.append(boneNode.getInstandeId())
             pass
         self.addProp("bones", bones)
-        min = [self.minx,self.miny,self.minz]
-        max = [self.maxx,self.maxy,self.maxz]
-        self.addProp("boundBox",{"min":min,"max":max})
+        min = [self.minx, self.miny, self.minz]
+        max = [self.maxx, self.maxy, self.maxz]
+        self.addProp("boundBox", {"min": min, "max": max})
         subMeshCount = len(self._indices)
         boneIndexList = []
         subIBIndex = []
@@ -376,14 +415,16 @@ class FBXMesh(FBXNode):
                 tigleboneindexs = tri.triangleBoneIndex()
                 isAdd = False
                 for m in range(len(subboneIndesList)):
-                    lastlist = FBXUnit.ListContainCount(tigleboneindexs, subboneIndesList[m])
+                    lastlist = FBXUnit.ListContainCount(
+                        tigleboneindexs, subboneIndesList[m])
                     lastlistCount = len(lastlist)
                     if lastlistCount == 0:
                         subsubMeshTriangle[m].append(tri)
                         isAdd = True
                         break
                         pass
-                    elif len(subboneIndesList[m]) + lastlistCount <= FBXConfig.GetMaxBoneCount():
+                    elif len(subboneIndesList[m]
+                             ) + lastlistCount <= FBXConfig.GetMaxBoneCount():
                         for c in range(lastlistCount):
                             subboneIndesList[m].append(lastlist[c])
                             pass
@@ -474,7 +515,8 @@ class FBXMesh(FBXNode):
             outfile.write_uint32(0)  # vbStart
             outfile.write_uint32(0)  # vbLength
             stringDatas.append(self.vbDeclaration)
-            outfile.write_uint16(stringDatas.index(self.vbDeclaration))  # vbDeclar
+            outfile.write_uint16(stringDatas.index(
+                self.vbDeclaration))  # vbDeclar
             pass
 
         # ib
@@ -516,7 +558,8 @@ class FBXMesh(FBXNode):
                 outfile.write_uint32(0)  # boneDicLength
 
             subMeshAreaPosition_End.append(outfile.pos())
-            subMeshAreaSize.append(subMeshAreaPosition_End[i] - subMeshAreaPosition_Start[i])
+            subMeshAreaSize.append(subMeshAreaPosition_End[i] -
+                                   subMeshAreaPosition_Start[i])
 
         # 字符数据区
         StringDatasAreaPosition_Start = outfile.pos()
@@ -552,16 +595,19 @@ class FBXMesh(FBXNode):
         boneDicDatasAreaPosition_End = 0
         lSkinCount = self._pMesh.GetDeformerCount(FbxDeformer.eSkin)
         for i in range(lSkinCount):
-            lClusterCount = self._pMesh.GetDeformer(i, FbxDeformer.eSkin).GetClusterCount()
+            lClusterCount = self._pMesh.GetDeformer(
+                i, FbxDeformer.eSkin).GetClusterCount()
             transformMatrix = FbxAMatrix()
             transformLinkMatrix = FbxAMatrix()
             inverseGlobalBindPosesDatasAreaPosition_Start = outfile.pos()
             globalScale = FBXUnit.GetGlobalFactio()
             for j in range(lClusterCount):
-                lCluster = self._pMesh.GetDeformer(i, FbxDeformer.eSkin).GetCluster(j)
+                lCluster = self._pMesh.GetDeformer(
+                    i, FbxDeformer.eSkin).GetCluster(j)
                 lCluster.GetTransformMatrix(transformMatrix)
                 lCluster.GetTransformLinkMatrix(transformLinkMatrix)
-                transformMatrix = transformLinkMatrix.Inverse()*transformMatrix
+                transformMatrix = transformLinkMatrix.Inverse(
+                ) * transformMatrix
                 for kk in range(3):
                     row = transformMatrix.GetRow(kk)
                     outfile.write_float(row[0])
@@ -569,9 +615,9 @@ class FBXMesh(FBXNode):
                     outfile.write_float(row[2])
                     outfile.write_float(row[3])
                 row = transformMatrix.GetRow(3)
-                outfile.write_float(row[0]*globalScale)
-                outfile.write_float(row[1]*globalScale)
-                outfile.write_float(row[2]*globalScale)
+                outfile.write_float(row[0] * globalScale)
+                outfile.write_float(row[1] * globalScale)
+                outfile.write_float(row[2] * globalScale)
                 outfile.write_float(row[3])
 
                 # Display4DVector("0.队列数据", transformMatrix.GetRow(0))
@@ -594,7 +640,7 @@ class FBXMesh(FBXNode):
         # 倒推子网格区
         ibStart = 0
         ibend = 0
-        boneDicStart = boneDicDatasAreaPosition_Start - StringDatasAreaPosition_Start;
+        boneDicStart = boneDicDatasAreaPosition_Start - StringDatasAreaPosition_Start
         for i in range(subMeshCount):
             outfile.seek(subMeshAreaPosition_Start[i] + 4)
             iblength = len(self._indices[i])
@@ -605,25 +651,31 @@ class FBXMesh(FBXNode):
             subIBStart = 0
             for j in range(boneIndexListCount):
                 outfile.write_uint32(subIBStart + ibStart)  # subIbStart
-                outfile.write_uint32(subIBIndex[i][j] - subIBStart)  # subIbLength
+                outfile.write_uint32(subIBIndex[i][j] -
+                                     subIBStart)  # subIbLength
                 subIBStart = subIBIndex[i][j]
                 outfile.write_uint32(boneDicStart)  # boneDicStart
-                outfile.write_uint32(len(boneIndexList[i][j])*2)  # boneDicLength
-                boneDicStart += len(boneIndexList[i][j])*2
+                outfile.write_uint32(len(boneIndexList[i][j]) *
+                                     2)  # boneDicLength
+                boneDicStart += len(boneIndexList[i][j]) * 2
             ibStart += iblength
             pass
         # 倒推网格区
         outfile.seek(VBMeshAreaPostion_Start)
-        outfile.write_uint32(VBContentDatasAreaPosition_Start - StringDatasAreaPosition_Start)
+        outfile.write_uint32(VBContentDatasAreaPosition_Start -
+                             StringDatasAreaPosition_Start)
         outfile.write_uint32(vertexCount)
 
         outfile.seek(IBMeshAreaPosition_Start)
-        outfile.write_uint32(IBContentDatasAreaPosition_Start - StringDatasAreaPosition_Start)
+        outfile.write_uint32(IBContentDatasAreaPosition_Start -
+                             StringDatasAreaPosition_Start)
         outfile.write_uint32(IBContentDatasAreaSize)
 
         outfile.seek(BoneAreaPosition_Start + (len(self.bonesName) + 1) * 2)
-        outfile.write_uint32(inverseGlobalBindPosesDatasAreaPosition_Start -StringDatasAreaPosition_Start)
-        outfile.write_uint32(boneDicDatasAreaPosition_Start - inverseGlobalBindPosesDatasAreaPosition_Start)
+        outfile.write_uint32(inverseGlobalBindPosesDatasAreaPosition_Start -
+                             StringDatasAreaPosition_Start)
+        outfile.write_uint32(boneDicDatasAreaPosition_Start -
+                             inverseGlobalBindPosesDatasAreaPosition_Start)
         # 倒推字符区
         outfile.seek(StringAreaPosition_Start)
         outfile.write_uint32(0)
@@ -640,9 +692,9 @@ class FBXMesh(FBXNode):
         # 倒推标记内容数据信息区
         outfile.seek(ContentAreaPosition_Start)
         outfile.write_uint32(StringDatasAreaPosition_Start)
-        outfile.write_uint32(
-            StringDatasAreaPosition_Start + StringDatasAreaSize + VBContentDatasAreaSize + IBContentDatasAreaSize +
-            subMeshAreaSize[0])
+        outfile.write_uint32(StringDatasAreaPosition_Start +
+                             StringDatasAreaSize + VBContentDatasAreaSize +
+                             IBContentDatasAreaSize + subMeshAreaSize[0])
 
         outfile.close()
         pass
@@ -650,7 +702,8 @@ class FBXMesh(FBXNode):
     def changeBoneIndex(self, boneindexlist, vertexdata):
         if vertexdata.ischange:
             for i in range(4):
-                vertexdata.boneIndex[i] = boneindexlist.index(vertexdata.boneIndex[i])
+                vertexdata.boneIndex[i] = boneindexlist.index(
+                    vertexdata.boneIndex[i])
             pass
         vertexdata.ischange = False
         pass
@@ -758,7 +811,8 @@ class FBXMesh(FBXNode):
             outfile.write_uint32(0)  # boneDicStart
             outfile.write_uint32(0)  # boneDicLength
             subMeshAreaPosition_End.append(outfile.pos())
-            subMeshAreaSize.append(subMeshAreaPosition_End[i] - subMeshAreaPosition_Start[i])
+            subMeshAreaSize.append(subMeshAreaPosition_End[i] -
+                                   subMeshAreaPosition_Start[i])
 
         # 字符数据区
         StringDatasAreaPosition_Start = outfile.pos()
@@ -806,11 +860,13 @@ class FBXMesh(FBXNode):
             pass
         # 倒推网格区
         outfile.seek(VBMeshAreaPostion_Start)
-        outfile.write_uint32(VBContentDatasAreaPosition_Start - StringDatasAreaPosition_Start)
+        outfile.write_uint32(VBContentDatasAreaPosition_Start -
+                             StringDatasAreaPosition_Start)
         outfile.write_uint32(vertexCount)
 
         outfile.seek(IBMeshAreaPosition_Start)
-        outfile.write_uint32(IBContentDatasAreaPosition_Start - StringDatasAreaPosition_Start)
+        outfile.write_uint32(IBContentDatasAreaPosition_Start -
+                             StringDatasAreaPosition_Start)
         outfile.write_uint32(IBContentDatasAreaSize)
         # 倒推字符区
         outfile.seek(StringAreaPosition_Start)
@@ -828,9 +884,9 @@ class FBXMesh(FBXNode):
         # 倒推标记内容数据信息区
         outfile.seek(ContentAreaPosition_Start)
         outfile.write_uint32(StringDatasAreaPosition_Start)
-        outfile.write_uint32(
-            StringDatasAreaPosition_Start + StringDatasAreaSize + VBContentDatasAreaSize + IBContentDatasAreaSize +
-            subMeshAreaSize[0])
+        outfile.write_uint32(StringDatasAreaPosition_Start +
+                             StringDatasAreaSize + VBContentDatasAreaSize +
+                             IBContentDatasAreaSize + subMeshAreaSize[0])
 
         outfile.close()
         pass
@@ -926,7 +982,8 @@ class FBXMesh(FBXNode):
             cPolygonIndex = []
             globalScale = FBXUnit.GetGlobalFactio()
             for j in range(lPolygonSize):
-                lControlPointIndex = mesh.GetPolygonVertex(groupinfo['pCount'], j)
+                lControlPointIndex = mesh.GetPolygonVertex(
+                    groupinfo['pCount'], j)
                 dataarr = []
                 # 顶点位置
                 vertice = FBXUnit.GetVertex(controlPoints, lControlPointIndex)
@@ -946,13 +1003,15 @@ class FBXMesh(FBXNode):
                 self.maxz = max(zPoint, self.maxz)
                 # 法向量
                 if normals is not None:
-                    normal = FBXUnit.GetDataByPolygonIndexOrVertexIndex(normals, vertexId, vertexId)
+                    normal = FBXUnit.GetDataByPolygonIndexOrVertexIndex(
+                        normals, vertexId, vertexId)
                     dataarr.append(normal[0])
                     dataarr.append(normal[2])
                     dataarr.append(normal[1])
                 # 顶点颜色
                 if leVtxc is not None:
-                    color = FBXUnit.GetDataByPolygonIndexOrVertexIndex(leVtxc, vertexId, lControlPointIndex)
+                    color = FBXUnit.GetDataByPolygonIndexOrVertexIndex(
+                        leVtxc, vertexId, lControlPointIndex)
                     dataarr.append(color.mRed)
                     dataarr.append(color.mGreen)
                     dataarr.append(color.mBlue)
@@ -960,13 +1019,15 @@ class FBXMesh(FBXNode):
                     pass
                 # uv
                 if leUV1 is not None:
-                    uv1 = FBXUnit.GetDataByPolygonIndexOrVertexIndex(leUV1, vertexId, lControlPointIndex)
+                    uv1 = FBXUnit.GetDataByPolygonIndexOrVertexIndex(
+                        leUV1, vertexId, lControlPointIndex)
                     dataarr.append(uv1[0])
                     dataarr.append(uv1[1])
                     pass
                 # uv1
                 if leUV2 is not None:
-                    uv2 = FBXUnit.GetDataByPolygonIndexOrVertexIndex(leUV2, vertexId, lControlPointIndex)
+                    uv2 = FBXUnit.GetDataByPolygonIndexOrVertexIndex(
+                        leUV2, vertexId, lControlPointIndex)
                     dataarr.append(uv2[0])
                     dataarr.append(uv2[1])
                     pass
@@ -990,13 +1051,14 @@ class FBXMesh(FBXNode):
                     pass
 
                 if leTangent is not None:
-                    tangent = FBXUnit.GetDataByPolygonIndexOrVertexIndex(leTangent, vertexId, lControlPointIndex)
+                    tangent = FBXUnit.GetDataByPolygonIndexOrVertexIndex(
+                        leTangent, vertexId, lControlPointIndex)
                     dataarr.append(tangent[0])
                     dataarr.append(tangent[2])
                     dataarr.append(tangent[1])
                     dataarr.append(tangent[3])
                     pass
-                cPolygonIndex.append(self.getVerData(dataarr,runList))
+                cPolygonIndex.append(self.getVerData(dataarr, runList))
                 vertexId += 1
                 pass  # end for
             for j in range(lPolygonSize - 2):

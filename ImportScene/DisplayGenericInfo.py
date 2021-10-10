@@ -52,6 +52,7 @@ from fbx import eFbxFloat
 from fbx import eFbxString
 from fbx import FbxCriteria
 
+
 def DisplayGenericInfo(pScene):
     lRootNode = pScene.GetRootNode()
 
@@ -59,8 +60,11 @@ def DisplayGenericInfo(pScene):
         DisplayNodeGenericInfo(lRootNode.GetChild(i), 0)
 
     #Other objects directly connected onto the scene
-    for i in range(pScene.GetSrcObjectCount(FbxCriteria.ObjectType(FbxObject.ClassId))):
-        DisplayProperties(pScene.GetSrcObject(FbxCriteria.ObjectType(FbxObject.ClassId), i))
+    for i in range(
+            pScene.GetSrcObjectCount(FbxCriteria.ObjectType(
+                FbxObject.ClassId))):
+        DisplayProperties(
+            pScene.GetSrcObject(FbxCriteria.ObjectType(FbxObject.ClassId), i))
 
 
 def DisplayNodeGenericInfo(pNode, pDepth):
@@ -79,8 +83,13 @@ def DisplayNodeGenericInfo(pNode, pDepth):
     for i in range(pNode.GetChildCount()):
         DisplayNodeGenericInfo(pNode.GetChild(i), pDepth + 1)
 
+
 def DisplayProperties(pObject):
-    DisplayString("Type: %s     Name: %s" % (pObject.ClassId.GetFbxFileTypeName(), pObject.GetName()))
+    if pObject.ClassId.GetFbxFileTypeName(
+    ) == "Model" or pObject.ClassId.GetFbxFileTypeName() == "GlobalSettings":
+        return
+    DisplayString("Type: %s     Name: %s" %
+                  (pObject.ClassId.GetFbxFileTypeName(), pObject.GetName()))
 
     # Display all the properties
     lCount = 0
@@ -92,11 +101,11 @@ def DisplayProperties(pObject):
     lTitleStr = "    Property Count: "
 
     if lCount == 0:
-        return # there are no properties to display
+        return  # there are no properties to display
 
     DisplayInt(lTitleStr, lCount)
 
-    i=0
+    i = 0
     lProperty = pObject.GetFirstProperty()
     while lProperty.IsValid():
         # exclude user properties
@@ -111,18 +120,20 @@ def DisplayProperties(pObject):
             DisplayDouble("            Min Limit: ", lProperty.GetMinLimit())
         if lProperty.HasMaxLimit():
             DisplayDouble("            Max Limit: ", lProperty.GetMaxLimit())
-        DisplayBool  ("            Is Animatable: ", lProperty.GetFlag(FbxPropertyFlags.eAnimatable))
+        DisplayBool("            Is Animatable: ",
+                    lProperty.GetFlag(FbxPropertyFlags.eAnimatable))
 
         if lProperty.GetPropertyDataType().GetType() == eFbxBool:
             lProperty = FbxPropertyBool1(lProperty)
             DisplayBool("            Default Value: ", lProperty.Get())
         elif lProperty.GetPropertyDataType().GetType() == eFbxDouble:
             lProperty = FbxPropertyDouble1(lProperty)
-            DisplayDouble("            Default Value: ",lProperty.Get())
+            DisplayDouble("            Default Value: ", lProperty.Get())
         elif lProperty.GetPropertyDataType().GetType() == eFbxDouble4:
             lProperty = FbxPropertyDouble4(lProperty)
             lDefault = lProperty.Get()
-            lBuf = "R=%f, G=%f, B=%f, A=%f" % (lDefault[0], lDefault[1], lDefault[2], lDefault[3])
+            lBuf = "R=%f, G=%f, B=%f, A=%f" % (lDefault[0], lDefault[1],
+                                               lDefault[2], lDefault[3])
             DisplayString("            Default Value: ", lBuf)
         elif lProperty.GetPropertyDataType().GetType() == eFbxInt:
             lProperty = FbxPropertyInteger1(lProperty)
@@ -130,7 +141,7 @@ def DisplayProperties(pObject):
         elif lProperty.GetPropertyDataType().GetType() == eFbxDouble3:
             lProperty = FbxPropertyDouble3(lProperty)
             lDefault = lProperty.Get()
-            lBuf  = "X=%f, Y=%f, Z=%f" % (lDefault[0], lDefault[1], lDefault[2])
+            lBuf = "X=%f, Y=%f, Z=%f" % (lDefault[0], lDefault[1], lDefault[2])
             DisplayString("            Default Value: ", lBuf)
         #case  DTEnum:
         #    DisplayInt("            Default Value: ", lProperty.Get())
@@ -145,6 +156,6 @@ def DisplayProperties(pObject):
             DisplayString("            Default Value: ", lString.Buffer())
         else:
             DisplayString("            Default Value: UNIDENTIFIED")
-        
+
         i += 1
         lProperty = pObject.GetNextProperty(lProperty)

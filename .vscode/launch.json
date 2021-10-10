@@ -10,7 +10,7 @@
       "request": "launch",
       "program": "fbxToLaya.py",
       "console": "integratedTerminal",
-      "args": ["res/mengpi11.fbx", "E://work/TestMeshSprite/bin/res"]
+      "args": ["res/SambaDancing.fbx", "E://work/TestMeshSprite/bin/res"]
     }
   ]
 }

@@ -2,3 +2,7 @@
 ExportScene/__pycache__
 ImportScene/__pycache__
 res
+__pycache__
+build
+dist
+fbxToLaya.spec

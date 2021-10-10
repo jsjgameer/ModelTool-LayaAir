@@ -36,9 +36,13 @@
 from ImportScene.DisplayCommon import *
 from fbx import *
 
+
 def DisplayAnimation(pScene):
-    for i in range(pScene.GetSrcObjectCount(FbxCriteria.ObjectType(FbxAnimStack.ClassId))):
-        lAnimStack = pScene.GetSrcObject(FbxCriteria.ObjectType(FbxAnimStack.ClassId), i)
+    for i in range(
+            pScene.GetSrcObjectCount(
+                FbxCriteria.ObjectType(FbxAnimStack.ClassId))):
+        lAnimStack = pScene.GetSrcObject(
+            FbxCriteria.ObjectType(FbxAnimStack.ClassId), i)
 
         lOutputString = "Animation Stack Name: "
         lOutputString += lAnimStack.GetName()
@@ -48,8 +52,10 @@ def DisplayAnimation(pScene):
         DisplayAnimationStack(lAnimStack, pScene.GetRootNode(), True)
         DisplayAnimationStack(lAnimStack, pScene.GetRootNode(), False)
 
+
 def DisplayAnimationStack(pAnimStack, pNode, isSwitcher):
-    nbAnimLayers = pAnimStack.GetSrcObjectCount(FbxCriteria.ObjectType(FbxAnimLayer.ClassId))
+    nbAnimLayers = pAnimStack.GetSrcObjectCount(
+        FbxCriteria.ObjectType(FbxAnimLayer.ClassId))
 
     lOutputString = "Animation stack contains "
     lOutputString += str(nbAnimLayers)
@@ -57,7 +63,8 @@ def DisplayAnimationStack(pAnimStack, pNode, isSwitcher):
     print(lOutputString)
 
     for l in range(nbAnimLayers):
-        lAnimLayer = pAnimStack.GetSrcObject(FbxCriteria.ObjectType(FbxAnimLayer.ClassId), l)
+        lAnimLayer = pAnimStack.GetSrcObject(
+            FbxCriteria.ObjectType(FbxAnimLayer.ClassId), l)
 
         lOutputString = "AnimLayer "
         lOutputString += str(l)
@@ -65,20 +72,24 @@ def DisplayAnimationStack(pAnimStack, pNode, isSwitcher):
 
         DisplayAnimationLayer(lAnimLayer, pNode, isSwitcher)
 
+
 def DisplayAnimationLayer(pAnimLayer, pNode, isSwitcher=False):
     lOutputString = "     Node Name: "
     lOutputString += pNode.GetName()
     lOutputString += "\n"
     print(lOutputString)
 
-    DisplayChannels(pNode, pAnimLayer, DisplayCurveKeys, DisplayListCurveKeys, isSwitcher)
+    DisplayChannels(pNode, pAnimLayer, DisplayCurveKeys, DisplayListCurveKeys,
+                    isSwitcher)
     print
 
     for lModelCount in range(pNode.GetChildCount()):
-        DisplayAnimationLayer(pAnimLayer, pNode.GetChild(lModelCount), isSwitcher)
+        DisplayAnimationLayer(pAnimLayer, pNode.GetChild(lModelCount),
+                              isSwitcher)
 
 
-def DisplayChannels(pNode, pAnimLayer, DisplayCurve, DisplayListCurve, isSwitcher):
+def DisplayChannels(pNode, pAnimLayer, DisplayCurve, DisplayListCurve,
+                    isSwitcher):
     lAnimCurve = None
 
     KFCURVENODE_T_X = "X"
@@ -141,17 +152,20 @@ def DisplayChannels(pNode, pAnimLayer, DisplayCurve, DisplayListCurve, isSwitche
     KFCURVENODE_COLOR_RED = "X"
     KFCURVENODE_COLOR_GREEN = "Y"
     KFCURVENODE_COLOR_BLUE = "Z"
-    
+
     if lNodeAttribute:
-        lAnimCurve = lNodeAttribute.Color.GetCurve(pAnimLayer, KFCURVENODE_COLOR_RED)
+        lAnimCurve = lNodeAttribute.Color.GetCurve(pAnimLayer,
+                                                   KFCURVENODE_COLOR_RED)
         if lAnimCurve:
             print("        Red")
             DisplayCurve(lAnimCurve)
-        lAnimCurve = lNodeAttribute.Color.GetCurve(pAnimLayer, KFCURVENODE_COLOR_GREEN)
+        lAnimCurve = lNodeAttribute.Color.GetCurve(pAnimLayer,
+                                                   KFCURVENODE_COLOR_GREEN)
         if lAnimCurve:
             print("        Green")
             DisplayCurve(lAnimCurve)
-        lAnimCurve = lNodeAttribute.Color.GetCurve(pAnimLayer, KFCURVENODE_COLOR_BLUE)
+        lAnimCurve = lNodeAttribute.Color.GetCurve(pAnimLayer,
+                                                   KFCURVENODE_COLOR_BLUE)
         if lAnimCurve:
             print("        Blue")
             DisplayCurve(lAnimCurve)
@@ -213,14 +227,18 @@ def DisplayChannels(pNode, pAnimLayer, DisplayCurve, DisplayListCurve, isSwitche
             lNodeAttribute.GetAttributeType() == FbxNodeAttribute.ePatch:
             lGeometry = lNodeAttribute
 
-            lBlendShapeDeformerCount = lGeometry.GetDeformerCount(FbxDeformer.eBlendShape)
+            lBlendShapeDeformerCount = lGeometry.GetDeformerCount(
+                FbxDeformer.eBlendShape)
             for lBlendShapeIndex in range(lBlendShapeDeformerCount):
-                lBlendShape = lGeometry.GetDeformer(lBlendShapeIndex, FbxDeformer.eBlendShape)
-                lBlendShapeChannelCount = lBlendShape.GetBlendShapeChannelCount()
+                lBlendShape = lGeometry.GetDeformer(lBlendShapeIndex,
+                                                    FbxDeformer.eBlendShape)
+                lBlendShapeChannelCount = lBlendShape.GetBlendShapeChannelCount(
+                )
                 for lChannelIndex in range(lBlendShapeChannelCount):
                     lChannel = lBlendShape.GetBlendShapeChannel(lChannelIndex)
                     lChannelName = lChannel.GetName()
-                    lAnimCurve = lGeometry.GetShapeChannel(lBlendShapeIndex, lChannelIndex, pAnimLayer, True)
+                    lAnimCurve = lGeometry.GetShapeChannel(
+                        lBlendShapeIndex, lChannelIndex, pAnimLayer, True)
                     if lAnimCurve:
                         print("        Shape %s" % lChannelName)
                         DisplayCurve(lAnimCurve)
@@ -229,7 +247,7 @@ def DisplayChannels(pNode, pAnimLayer, DisplayCurve, DisplayListCurve, isSwitche
     lProperty = pNode.GetFirstProperty()
     while lProperty.IsValid():
         if lProperty.GetFlag(FbxPropertyFlags.eUserDefined):
-            lFbxFCurveNodeName  = lProperty.GetName()
+            lFbxFCurveNodeName = lProperty.GetName()
             lCurveNode = lProperty.GetCurveNode(pAnimLayer)
 
             if not lCurveNode:
@@ -237,8 +255,10 @@ def DisplayChannels(pNode, pAnimLayer, DisplayCurve, DisplayListCurve, isSwitche
                 continue
 
             lDataType = lProperty.GetPropertyDataType()
-            if lDataType.GetType() == eFbxBool or lDataType.GetType() == eFbxDouble or lDataType.GetType() == eFbxFloat or lDataType.GetType() == eFbxInt:
-                lMessage =  "        Property "
+            if lDataType.GetType() == eFbxBool or lDataType.GetType(
+            ) == eFbxDouble or lDataType.GetType(
+            ) == eFbxFloat or lDataType.GetType() == eFbxInt:
+                lMessage = "        Property "
                 lMessage += lProperty.GetName()
                 if lProperty.GetLabel().GetLen() > 0:
                     lMessage += " (Label: "
@@ -251,17 +271,19 @@ def DisplayChannels(pNode, pAnimLayer, DisplayCurve, DisplayListCurve, isSwitche
                     lAnimCurve = lCurveNode.GetCurve(0, c)
                     if lAnimCurve:
                         DisplayCurve(lAnimCurve)
-            elif lDataType.GetType() == eFbxDouble3 or lDataType.GetType() == eFbxDouble4 or lDataType.Is(FbxColor3DT) or lDataType.Is(FbxColor4DT):
+            elif lDataType.GetType() == eFbxDouble3 or lDataType.GetType(
+            ) == eFbxDouble4 or lDataType.Is(FbxColor3DT) or lDataType.Is(
+                    FbxColor4DT):
                 if lDataType.Is(FbxColor3DT) or lDataType.Is(FbxColor4DT):
                     lComponentName1 = KFCURVENODE_COLOR_RED
                     lComponentName2 = KFCURVENODE_COLOR_GREEN
-                    lComponentName3 = KFCURVENODE_COLOR_BLUE                    
+                    lComponentName3 = KFCURVENODE_COLOR_BLUE
                 else:
                     lComponentName1 = "X"
                     lComponentName2 = "Y"
                     lComponentName3 = "Z"
-                
-                lMessage =  "        Property "
+
+                lMessage = "        Property "
                 lMessage += lProperty.GetName()
                 if lProperty.GetLabel().GetLen() > 0:
                     lMessage += " (Label: "
@@ -287,7 +309,7 @@ def DisplayChannels(pNode, pAnimLayer, DisplayCurve, DisplayListCurve, isSwitche
                         DisplayString("        Component ", lComponentName3)
                         DisplayCurve(lAnimCurve)
             elif lDataType.GetType() == eFbxEnum:
-                lMessage =  "        Property "
+                lMessage = "        Property "
                 lMessage += lProperty.GetName()
                 if lProperty.GetLabel().GetLen() > 0:
                     lMessage += " (Label: "
@@ -312,12 +334,14 @@ def InterpolationFlagToIndex(flags):
     #    return 3
     return 0
 
+
 def ConstantmodeFlagToIndex(flags):
     #if (flags&KFCURVE_CONSTANT_STANDARD)==KFCURVE_CONSTANT_STANDARD:
     #    return 1
     #if (flags&KFCURVE_CONSTANT_NEXT)==KFCURVE_CONSTANT_NEXT:
     #    return 2
     return 0
+
 
 def TangeantmodeFlagToIndex(flags):
     #if (flags&KFCURVE_TANGEANT_AUTO) == KFCURVE_TANGEANT_AUTO:
@@ -334,6 +358,7 @@ def TangeantmodeFlagToIndex(flags):
     #    return 6
     return 0
 
+
 def TangeantweightFlagToIndex(flags):
     #if (flags&KFCURVE_WEIGHTED_NONE) == KFCURVE_WEIGHTED_NONE:
     #    return 1
@@ -342,6 +367,7 @@ def TangeantweightFlagToIndex(flags):
     #if (flags&KFCURVE_WEIGHTED_NEXT_LEFT) == KFCURVE_WEIGHTED_NEXT_LEFT:
     #    return 3
     return 0
+
 
 def TangeantVelocityFlagToIndex(flags):
     #if (flags&KFCURVE_VELOCITY_NONE) == KFCURVE_VELOCITY_NONE:
@@ -352,25 +378,34 @@ def TangeantVelocityFlagToIndex(flags):
     #    return 3
     return 0
 
+
 def DisplayCurveKeys(pCurve):
-    interpolation = [ "?", "constant", "linear", "cubic"]
-    constantMode =  [ "?", "Standard", "Next" ]
-    cubicMode =     [ "?", "Auto", "Auto break", "Tcb", "User", "Break", "User break" ]
-    tangentWVMode = [ "?", "None", "Right", "Next left" ]
+    interpolation = ["?", "constant", "linear", "cubic"]
+    constantMode = ["?", "Standard", "Next"]
+    cubicMode = [
+        "?", "Auto", "Auto break", "Tcb", "User", "Break", "User break"
+    ]
+    tangentWVMode = ["?", "None", "Right", "Next left"]
 
     lKeyCount = pCurve.KeyGetCount()
 
     for lCount in range(lKeyCount):
         lTimeString = ""
         lKeyValue = pCurve.KeyGetValue(lCount)
-        lKeyTime  = pCurve.KeyGetTime(lCount)
+        lKeyTime = pCurve.KeyGetTime(lCount)
+        lKeyInfo = pCurve.KeyGet(lCount)
+        print(lKeyInfo.GetDataFloat(FbxAnimCurveDef.eRightSlope))
+        print(lKeyInfo.GetDataFloat(FbxAnimCurveDef.eNextLeftSlope))
+        print(lKeyInfo.GetDataFloat(FbxAnimCurveDef.eWeights))
+        print(lKeyInfo.GetDataFloat(FbxAnimCurveDef.eNextLeftWeight))
 
         lOutputString = "            Key Time: "
         lOutputString += lKeyTime.GetTimeString(lTimeString)
         lOutputString += ".... Key Value: "
         lOutputString += str(lKeyValue)
         lOutputString += " [ "
-        lOutputString += interpolation[ InterpolationFlagToIndex(pCurve.KeyGetInterpolation(lCount)) ]
+        lOutputString += interpolation[InterpolationFlagToIndex(
+            pCurve.KeyGetInterpolation(lCount))]
         #if (pCurve.KeyGetInterpolation(lCount)&KFCURVE_INTERPOLATION_CONSTANT) == KFCURVE_INTERPOLATION_CONSTANT:
         #    lOutputString += " | "
         #    lOutputString += constantMode[ ConstantmodeFlagToIndex(pCurve.KeyGetConstantMode(lCount)) ]
@@ -381,22 +416,24 @@ def DisplayCurveKeys(pCurve):
         #    lOutputString += tangentWVMode[ TangeantweightFlagToIndex(pCurve.KeyGetTangeantWeightMode(lCount)) ]
         #    lOutputString += " | "
         #    lOutputString += tangentWVMode[ TangeantVelocityFlagToIndex(pCurve.KeyGetTangeantVelocityMode(lCount)) ]
-            
+
         lOutputString += " ]"
         print(lOutputString)
+
 
 def DisplayCurveDefault(pCurve):
     lOutputString = "            Default Value: "
     lOutputString += pCurve.GetValue()
-    
+
     print(lOutputString)
+
 
 def DisplayListCurveKeys(pCurve, pProperty):
     lKeyCount = pCurve.KeyGetCount()
 
     for lCount in range(lKeyCount):
-        lKeyValue = static_cast<int>(pCurve.KeyGetValue(lCount))
-        lKeyTime  = pCurve.KeyGetTime(lCount)
+        lKeyValue = static_cast < int > (pCurve.KeyGetValue(lCount))
+        lKeyTime = pCurve.KeyGetTime(lCount)
 
         lOutputString = "            Key Time: "
         lOutputString += lKeyTime.GetTimeString(lTimeString)
@@ -407,6 +444,7 @@ def DisplayListCurveKeys(pCurve, pProperty):
         lOutputString += ")"
 
         print(lOutputString)
+
 
 def DisplayListCurveDefault(pCurve, pProperty):
     DisplayCurveDefault(pCurve)

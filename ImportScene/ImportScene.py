@@ -13,21 +13,21 @@ import sys
 import fbx
 from fbx import FbxThumbnail, FbxNodeAttribute, FbxNode
 
-from ImportScene.DisplayGlobalSettings  import *
-from ImportScene.DisplayHierarchy       import DisplayHierarchy
-from ImportScene.DisplayMarker          import DisplayMarker
-from ImportScene.DisplayMesh            import DisplayMesh
-from ImportScene.DisplayUserProperties  import DisplayUserProperties
+from ImportScene.DisplayGlobalSettings import *
+from ImportScene.DisplayHierarchy import DisplayHierarchy
+from ImportScene.DisplayMarker import DisplayMarker
+from ImportScene.DisplayMesh import DisplayMesh
+from ImportScene.DisplayUserProperties import DisplayUserProperties
 from ImportScene.DisplayPivotsAndLimits import DisplayPivotsAndLimits
-from ImportScene.DisplaySkeleton        import DisplaySkeleton
-from ImportScene.DisplayNurb            import DisplayNurb
-from ImportScene.DisplayPatch           import DisplayPatch
-from ImportScene.DisplayCamera          import DisplayCamera
-from ImportScene.DisplayLight           import DisplayLight
-from ImportScene.DisplayLodGroup        import DisplayLodGroup
-from ImportScene.DisplayPose            import DisplayPose
-from ImportScene.DisplayAnimation       import DisplayAnimation
-from ImportScene.DisplayGenericInfo     import DisplayGenericInfo
+from ImportScene.DisplaySkeleton import DisplaySkeleton
+from ImportScene.DisplayNurb import DisplayNurb
+from ImportScene.DisplayPatch import DisplayPatch
+from ImportScene.DisplayCamera import DisplayCamera
+from ImportScene.DisplayLight import DisplayLight
+from ImportScene.DisplayLodGroup import DisplayLodGroup
+from ImportScene.DisplayPose import DisplayPose
+from ImportScene.DisplayAnimation import DisplayAnimation
+from ImportScene.DisplayGenericInfo import DisplayGenericInfo
 
 
 def DisplayMetaData(pScene):
@@ -45,17 +45,21 @@ def DisplayMetaData(pScene):
         if thumbnail:
             print("    Thumbnail:")
 
-            if thumbnail.GetDataFormat() == FbxThumbnail.eRGB_24 :
+            if thumbnail.GetDataFormat() == FbxThumbnail.eRGB_24:
                 print("        Format: RGB")
             elif thumbnail.GetDataFormat() == FbxThumbnail.eRGBA_32:
                 print("        Format: RGBA")
 
             if thumbnail.GetSize() == FbxThumbnail.eNOT_SET:
-                print("        Size: no dimensions specified (%ld bytes)", thumbnail.GetSizeInBytes())
+                print("        Size: no dimensions specified (%ld bytes)",
+                      thumbnail.GetSizeInBytes())
             elif thumbnail.GetSize() == FbxThumbnail.e64x64:
-                print("        Size: 64 x 64 pixels (%ld bytes)", thumbnail.GetSizeInBytes())
+                print("        Size: 64 x 64 pixels (%ld bytes)",
+                      thumbnail.GetSizeInBytes())
             elif thumbnail.GetSize() == FbxThumbnail.e128x128:
-                print("        Size: 128 x 128 pixels (%ld bytes)", thumbnail.GetSizeInBytes())
+                print("        Size: 128 x 128 pixels (%ld bytes)",
+                      thumbnail.GetSizeInBytes())
+
 
 def DisplayContent(pScene):
     lNode = pScene.GetRootNode()
@@ -63,6 +67,7 @@ def DisplayContent(pScene):
     if lNode:
         for i in range(lNode.GetChildCount()):
             DisplayNodeContent(lNode.GetChild(i))
+
 
 def DisplayNodeContent(pNode):
     if pNode.GetNodeAttribute() == None:
@@ -94,17 +99,19 @@ def DisplayNodeContent(pNode):
     for i in range(pNode.GetChildCount()):
         DisplayNodeContent(pNode.GetChild(i))
 
+
 def DisplayTarget(pNode):
     if pNode.GetTarget():
         DisplayString("    Target Name: ", pNode.GetTarget().GetName())
 
+
 def DisplayTransformPropagation(pNode):
     print("    Transformation Propagation")
-    
+
     # Rotation Space
     lRotationOrder = pNode.GetRotationOrder(FbxNode.eSourcePivot)
 
-    print("        Rotation Space:",)
+    print("        Rotation Space:", )
 
     if lRotationOrder == fbx.eEulerXYZ:
         print("Euler XYZ")
@@ -120,19 +127,20 @@ def DisplayTransformPropagation(pNode):
         print("Euler ZYX")
     elif lRotationOrder == fbx.eSphericXYZ:
         print("Spheric XYZ")
-    
+
     # Use the Rotation space only for the limits
     # (keep using eEULER_XYZ for the rest)
     if pNode.GetUseRotationSpaceForLimitOnly(FbxNode.eSourcePivot):
-        print("        Use the Rotation Space for Limit specification only: Yes")
+        print(
+            "        Use the Rotation Space for Limit specification only: Yes")
     else:
-        print("        Use the Rotation Space for Limit specification only: No")
-
+        print(
+            "        Use the Rotation Space for Limit specification only: No")
 
     # Inherit Type
     lInheritType = pNode.GetTransformationInheritType()
 
-    print("        Transformation Inheritance:",)
+    print("        Transformation Inheritance:", )
 
     if lInheritType == fbx.FbxTransform.eInheritRrSs:
         print("RrSs")
@@ -147,15 +155,19 @@ def DisplayGeometricTransform(pNode):
 
     # Translation
     lTmpVector = pNode.GetGeometricTranslation(FbxNode.eSourcePivot)
-    print("        Translation: %f %f %f" % (lTmpVector[0], lTmpVector[1], lTmpVector[2]))
+    print("        Translation: %f %f %f" %
+          (lTmpVector[0], lTmpVector[1], lTmpVector[2]))
 
     # Rotation
     lTmpVector = pNode.GetGeometricRotation(FbxNode.eSourcePivot)
-    print("        Rotation:    %f %f %f" % (lTmpVector[0], lTmpVector[1], lTmpVector[2]))
+    print("        Rotation:    %f %f %f" %
+          (lTmpVector[0], lTmpVector[1], lTmpVector[2]))
 
     # Scaling
     lTmpVector = pNode.GetGeometricScaling(FbxNode.eSourcePivot)
-    print("        Scaling:     %f %f %f" % (lTmpVector[0], lTmpVector[1], lTmpVector[2]))
+    print("        Scaling:     %f %f %f" %
+          (lTmpVector[0], lTmpVector[1], lTmpVector[2]))
+
 
 def DisPlayScene(lScene):
     # DisplayMetaData(lScene)
@@ -181,5 +193,5 @@ def DisPlayScene(lScene):
     DisplayAnimation(lScene)
 
     #now display generic information
-    # print("\n\n---------\nGeneric Information\n---------\n")
+    print("\n\n---------\nGeneric Information\n---------\n")
     # DisplayGenericInfo(lScene)
